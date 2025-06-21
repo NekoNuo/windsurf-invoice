@@ -37,7 +37,38 @@ export default function Home() {
   };
 
   const handlePrint = () => {
-    window.print();
+    // 设置PDF文件名为Receipt-{receiptNumber}
+    if (invoiceData) {
+      const receiptNumber = invoiceData.receiptNumber;
+      const fileName = `Receipt-${receiptNumber}`;
+
+      // 创建一个临时的样式元素来设置PDF标题
+      const style = document.createElement('style');
+      style.textContent = `
+        @media print {
+          @page {
+            margin: 0;
+            size: A4;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+
+      // 临时修改页面标题
+      const originalTitle = document.title;
+      document.title = fileName;
+
+      // 执行打印
+      window.print();
+
+      // 恢复原始标题和移除样式
+      setTimeout(() => {
+        document.title = originalTitle;
+        document.head.removeChild(style);
+      }, 1000);
+    } else {
+      window.print();
+    }
   };
 
   return (
