@@ -242,34 +242,53 @@ export default function Invoice({ data }: InvoiceProps) {
             size: A4;
           }
 
+          html, body {
+            background-color: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            -webkit-print-color-adjust: exact;
+          }
+
           .invoice-container {
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
+            background-color: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
             box-shadow: none !important;
+            display: block !important;
+            justify-content: unset !important;
           }
+
           .page {
-            width: 100%;
-            min-height: 0;
-            margin: 0;
+            width: 100% !important;
+            min-height: 100vh !important;
+            margin: 0 !important;
             box-shadow: none !important;
-            border: none;
-            padding: 40px 50px;
-            background-color: #ffffff;
+            border: none !important;
+            padding: 40px 50px !important;
+            background-color: #ffffff !important;
+            display: block !important;
+            flex-direction: unset !important;
           }
+
+          .content-wrapper {
+            flex-grow: unset !important;
+          }
+
           .footer {
             margin-top: 380px;
             page-break-inside: avoid;
           }
 
           /* 隐藏浏览器默认的页眉页脚和所有阴影 */
-          body {
-            -webkit-print-color-adjust: exact;
-          }
-
           * {
             box-shadow: none !important;
             -webkit-box-shadow: none !important;
+            background-color: inherit !important;
+          }
+
+          /* 确保没有灰色背景 */
+          *:not(.page) {
+            background-color: transparent !important;
           }
         }
       `}</style>

@@ -37,13 +37,23 @@ body {
     size: A4;
   }
 
-  * {
+  html, body {
+    background-color: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
 
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+  }
+
+  /* 确保所有元素背景为白色或透明 */
+  *:not(.page) {
+    background-color: transparent !important;
   }
 }
