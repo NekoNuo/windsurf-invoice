@@ -1,4 +1,5 @@
 # WIPDF
+原项目 https://github.com/Sirhexs/WIPDF
 
 基于Windsurf Invoice模板的随机Invoice生成Web应用程序，可以生成随机的Invoice数据并支持PDF导出。
 
