@@ -8,7 +8,9 @@
     "export": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "npm run export && wrangler pages deploy out"
+    "deploy:cf": "npm run export && wrangler deploy --assets=./out",
+    "deploy:pages": "npm run export && wrangler pages deploy out --project-name wipdf",
+    "deploy": "npm run export && echo 'Build complete! Choose deployment:' && echo '1. Cloudflare Workers: npm run deploy:cf' && echo '2. Cloudflare Pages: npm run deploy:pages' && echo '3. Vercel: vercel --prod'"
   },
   "dependencies": {
     "react": "^19.0.0",

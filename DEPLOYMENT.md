@@ -26,6 +26,18 @@
    npm run export
    ```
 
+2. **部署到Cloudflare**
+   ```bash
+   wrangler deploy --assets=./out
+   ```
+
+### 方法3：使用Cloudflare Pages
+
+1. **构建项目**
+   ```bash
+   npm run export
+   ```
+
 2. **部署到Cloudflare Pages**
    ```bash
    wrangler pages deploy out --project-name wipdf

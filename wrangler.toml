@@ -1,6 +1,9 @@
 name = "wipdf"
 compatibility_date = "2025-06-21"
 
+[assets]
+directory = "./out"
+
 [env.production]
 compatibility_date = "2025-06-21"
 
