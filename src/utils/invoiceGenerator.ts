@@ -1,4 +1,4 @@
-import { InvoiceData, BillToInfo } from '@/types/invoice';
+import { InvoiceData, BillToInfo, AdvancedConfig } from '@/types/invoice';
 
 // 随机生成Invoice号码 (格式: 8位字符-4位数字)
 function generateInvoiceNumber(): string {
@@ -51,7 +51,7 @@ function generateRandomDate(): string {
 }
 
 // 随机生成收票人信息
-function generateBillToInfo(email: string): BillToInfo {
+function generateBillToInfo(email: string, config?: AdvancedConfig): BillToInfo {
   const names = [
     'ZHANG WEI', 'WANG MING', 'LI XIAOLI', 'CHEN ZHANGQI', 'ZHAO YIFAN',
     'JOHN SMITH', 'JANE DOE', 'MICHAEL BROWN', 'SARAH WILSON', 'DAVID JONES',
@@ -84,12 +84,12 @@ function generateBillToInfo(email: string): BillToInfo {
   ];
 
   return {
-    name: names[Math.floor(Math.random() * names.length)],
-    address1: addresses1[Math.floor(Math.random() * addresses1.length)],
-    address2: addresses2[Math.floor(Math.random() * addresses2.length)],
-    city: cities[Math.floor(Math.random() * cities.length)],
-    state: states[Math.floor(Math.random() * states.length)],
-    country: countries[Math.floor(Math.random() * countries.length)],
+    name: config?.customName || names[Math.floor(Math.random() * names.length)],
+    address1: config?.customAddress1 || addresses1[Math.floor(Math.random() * addresses1.length)],
+    address2: config?.customAddress2 || addresses2[Math.floor(Math.random() * addresses2.length)],
+    city: config?.customCity || cities[Math.floor(Math.random() * cities.length)],
+    state: config?.customState || states[Math.floor(Math.random() * states.length)],
+    country: config?.customCountry || countries[Math.floor(Math.random() * countries.length)],
     email: email
   };
 }
@@ -112,14 +112,14 @@ function generateDateRange(datePaid: string): string {
 }
 
 // 主要的Invoice生成函数
-export function generateRandomInvoice(email: string): InvoiceData {
+export function generateRandomInvoice(email: string, config?: AdvancedConfig): InvoiceData {
   const invoiceNumber = generateInvoiceNumber();
   const receiptNumber = generateReceiptNumber();
-  const datePaid = generateRandomDate();
-  const paymentMethod = generatePaymentMethod();
-  const billTo = generateBillToInfo(email);
-  const amount = '$6.90';
-  const description = 'Windsurf Pro';
+  const datePaid = config?.customDatePaid || generateRandomDate();
+  const paymentMethod = config?.customPaymentMethod || generatePaymentMethod();
+  const billTo = generateBillToInfo(email, config);
+  const amount = config?.customAmount || '$6.90';
+  const description = config?.customDescription || 'Windsurf Pro';
   const dateRange = generateDateRange(datePaid);
 
   return {

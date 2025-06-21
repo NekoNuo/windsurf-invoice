@@ -26,3 +26,16 @@ export interface BillToInfo {
   country: string;
   email: string;
 }
+
+export interface AdvancedConfig {
+  customName?: string;
+  customAddress1?: string;
+  customAddress2?: string;
+  customCity?: string;
+  customState?: string;
+  customCountry?: string;
+  customPaymentMethod?: string;
+  customAmount?: string;
+  customDatePaid?: string;
+  customDescription?: string;
+}

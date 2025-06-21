@@ -231,23 +231,45 @@ export default function Invoice({ data }: InvoiceProps) {
         }
 
         /* 打印样式 */
+        @page {
+          margin: 0;
+          size: A4;
+        }
+
         @media print {
+          @page {
+            margin: 0;
+            size: A4;
+          }
+
           .invoice-container {
             background-color: #ffffff;
             margin: 0;
             padding: 0;
+            box-shadow: none !important;
           }
           .page {
             width: 100%;
             min-height: 0;
             margin: 0;
-            box-shadow: none;
+            box-shadow: none !important;
             border: none;
-            padding: 0;
+            padding: 40px 50px;
+            background-color: #ffffff;
           }
           .footer {
-          margin-top: 380px;
+            margin-top: 380px;
             page-break-inside: avoid;
+          }
+
+          /* 隐藏浏览器默认的页眉页脚和所有阴影 */
+          body {
+            -webkit-print-color-adjust: exact;
+          }
+
+          * {
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
           }
         }
       `}</style>

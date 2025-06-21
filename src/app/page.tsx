@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import Invoice from '@/components/Invoice';
 import { generateRandomInvoice } from '@/utils/invoiceGenerator';
-import { InvoiceData } from '@/types/invoice';
+import { InvoiceData, AdvancedConfig } from '@/types/invoice';
 
 export default function Home() {
   const [invoiceData, setInvoiceData] = useState<InvoiceData | null>(null);
   const [email, setEmail] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const [advancedConfig, setAdvancedConfig] = useState<AdvancedConfig>({});
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,7 +32,7 @@ export default function Home() {
       return;
     }
 
-    const newInvoice = generateRandomInvoice(email.trim());
+    const newInvoice = generateRandomInvoice(email.trim(), advancedConfig);
     setInvoiceData(newInvoice);
   };
 
@@ -85,6 +87,166 @@ export default function Home() {
               生成新Invoice
             </button>
           </div>
+
+          {/* 高级配置切换按钮 */}
+          <div className="mt-4">
+            <button
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
+            >
+              {showAdvanced ? '隐藏高级配置' : '显示高级配置'}
+            </button>
+          </div>
+
+          {/* 高级配置面板 */}
+          {showAdvanced && (
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">高级配置 (可选)</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* 收票人信息 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义姓名
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customName || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customName: e.target.value})}
+                    placeholder="留空则随机生成"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义地址1
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customAddress1 || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customAddress1: e.target.value})}
+                    placeholder="留空则随机生成"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义地址2
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customAddress2 || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customAddress2: e.target.value})}
+                    placeholder="留空则随机生成"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义城市
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customCity || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customCity: e.target.value})}
+                    placeholder="留空则随机生成"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义州/省
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customState || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customState: e.target.value})}
+                    placeholder="留空则随机生成"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义国家
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customCountry || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customCountry: e.target.value})}
+                    placeholder="留空则随机生成"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* 支付信息 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义支付方式
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customPaymentMethod || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customPaymentMethod: e.target.value})}
+                    placeholder="如: Visa - 1234"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义金额
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customAmount || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customAmount: e.target.value})}
+                    placeholder="如: $9.90"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义支付日期
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customDatePaid || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customDatePaid: e.target.value})}
+                    placeholder="如: June 1, 2025"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="md:col-span-2 lg:col-span-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    自定义产品描述
+                  </label>
+                  <input
+                    type="text"
+                    value={advancedConfig.customDescription || ''}
+                    onChange={(e) => setAdvancedConfig({...advancedConfig, customDescription: e.target.value})}
+                    placeholder="如: Windsurf Pro"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              {/* 重置按钮 */}
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => setAdvancedConfig({})}
+                  className="text-gray-600 hover:text-gray-700 text-sm font-medium transition-colors"
+                >
+                  重置所有配置
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
