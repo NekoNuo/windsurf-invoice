@@ -58,29 +58,52 @@ npm start
 
 ## 🚀 部署指南
 
-### 快速部署到Vercel
+### 快速部署选项
 
-#### 步骤1：Fork项目
+#### 选项1：Cloudflare Pages（推荐）
 
+**GitHub集成部署**：
+1. Fork本项目到您的GitHub
+2. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
+3. 进入Pages，点击"Create a project"
+4. 连接GitHub仓库，选择WIPDF项目
+5. 构建设置：
+   - Framework: `Next.js (Static HTML Export)`
+   - Build command: `npm run export`
+   - Output directory: `out`
+6. 点击"Save and Deploy"
+
+**CLI部署**：
+```bash
+npm run deploy:pages
+```
+
+#### 选项2：Vercel部署
+
+**GitHub集成部署**：
 1. **访问项目仓库**
    - 打开 [WIPDF项目页面](https://github.com/Sirhexs/WIPDF)
    - 点击右上角的 "Fork" 按钮
 
-#### 步骤2：部署到Vercel
-
-1. **登录Vercel**
+2. **部署到Vercel**
    - 访问 [vercel.com](https://vercel.com)
    - 使用GitHub账号登录
-
-2. **导入项目**
    - 点击 "New Project"
    - 选择你Fork的 `WIPDF` 仓库
-   - 点击 "Import"
+   - 点击 "Deploy"
 
-3. **开始部署**
-   - 点击 "Deploy" 按钮
-   - 等待1-3分钟完成构建
-   - 获得项目访问链接
+**CLI部署**：
+```bash
+vercel --prod
+```
+
+#### 选项3：其他平台
+
+项目支持任何静态托管平台：
+```bash
+npm run export
+# 然后上传 out/ 目录到任何静态托管服务
+```
 
 
 ## 使用说明
