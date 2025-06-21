@@ -1,0 +1,8 @@
+name = "wipdf"
+compatibility_date = "2025-06-21"
+
+[env.production]
+compatibility_date = "2025-06-21"
+
+# For static site deployment
+# The build output will be in the 'out' directory after running 'npm run build'
