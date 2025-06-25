@@ -7,6 +7,38 @@ interface InvoiceProps {
 }
 
 export default function Invoice({ data }: InvoiceProps) {
+  // 根据发票类型获取公司信息
+  const getCompanyInfo = () => {
+    if (data.invoiceType === 'cursor') {
+      return {
+        logo: '/cursor.svg',
+        logoAlt: 'Cursor Logo',
+        companyName: 'Cursor',
+        address1: '801 West End Avenue',
+        address2: '',
+        city: 'New York, New York 10025',
+        country: 'United States',
+        phone: '+1 831-425-9504',
+        email: 'hi@cursor.com',
+
+      };
+    } else {
+      return {
+        logo: '/logo.png',
+        logoAlt: 'Windsurf Logo',
+        companyName: 'Windsurf',
+        address1: '900 Villa Street',
+        address2: '',
+        city: 'Mountain View, California 94041',
+        country: 'United States',
+        email: 'noreply@windsurf.com',
+        vatNumber: 'EU OSS VAT EU372077851'
+      };
+    }
+  };
+
+  const companyInfo = getCompanyInfo();
+
   return (
     <div className="invoice-container">
       <style jsx>{`
@@ -296,9 +328,9 @@ export default function Invoice({ data }: InvoiceProps) {
       <div className="page">
         <div className="content-wrapper">
           <div className="header">
-            <h1>Receipt</h1>
+            <h1>{data.invoiceType === 'cursor' ? 'Invoice' : 'Receipt'}</h1>
             <div className="logo">
-              <img src="/logo.png" alt="Windsurf Logo" />
+              <img src={companyInfo.logo} alt={companyInfo.logoAlt} />
             </div>
           </div>
 
@@ -306,22 +338,41 @@ export default function Invoice({ data }: InvoiceProps) {
             <div className="invoice-info">
               <table>
                 <tbody>
-                  <tr>
-                    <td><b>Invoice number</b></td>
-                    <td><b>{data.invoiceNumber}</b></td>
-                  </tr>
-                  <tr>
-                    <td><b>Receipt number</b></td>
-                    <td><b>{data.receiptNumber}</b></td>
-                  </tr>
-                  <tr>
-                    <td><b>Date paid</b></td>
-                    <td><b>{data.datePaid}</b></td>
-                  </tr>
-                  <tr>
-                    <td><b>Payment method</b></td>
-                    <td><b>{data.paymentMethod}</b></td>
-                  </tr>
+                  {data.invoiceType === 'cursor' ? (
+                    <>
+                      <tr>
+                        <td><b>Invoice number</b></td>
+                        <td>{data.invoiceNumber}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Date of issue</b></td>
+                        <td>{data.datePaid}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Date due</b></td>
+                        <td>{data.datePaid}</td>
+                      </tr>
+                    </>
+                  ) : (
+                    <>
+                      <tr>
+                        <td><b>Invoice number</b></td>
+                        <td>{data.invoiceNumber}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Receipt number</b></td>
+                        <td>{data.receiptNumber}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Date paid</b></td>
+                        <td>{data.datePaid}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Payment method</b></td>
+                        <td>{data.paymentMethod}</td>
+                      </tr>
+                    </>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -329,22 +380,35 @@ export default function Invoice({ data }: InvoiceProps) {
           
           <div className="address-section">
             <div className="address">
-              <p><b>Windsurf</b></p>
-              <p>900 Villa Street</p>
-              <p>Mountain View, California 94041</p>
-              <p>United States</p>
-              <p>noreply@windsurf.com</p>
-              <p>EU OSS VAT EU372077851</p>
+              <p><b>{companyInfo.companyName}</b></p>
+              <p>{companyInfo.address1}</p>
+              {companyInfo.address2 && <p>{companyInfo.address2}</p>}
+              <p>{companyInfo.city}</p>
+              <p>{companyInfo.country}</p>
+              {companyInfo.phone && <p>{companyInfo.phone}</p>}
+              <p>{companyInfo.email}</p>
+              <p>{companyInfo.vatNumber}</p>
             </div>
             <div className="address">
               <p><b>Bill to</b></p>
               <p>{data.billTo.name}</p>
-              <p>{data.billTo.address1}</p>
-              <p>{data.billTo.address2}</p>
-              <p>{data.billTo.city}</p>
-              <p>{data.billTo.state}</p>
-              <p>{data.billTo.country}</p>
-              <p>{data.billTo.email}</p>
+              {data.invoiceType === 'cursor' ? (
+                <>
+                  <p>{data.billTo.address1}{data.billTo.address2 ? ` ${data.billTo.address2}` : ''}</p>
+                  <p>{data.billTo.city}, {data.billTo.state} {data.billTo.country === 'United States' ? '55767' : '10001'}</p>
+                  <p>{data.billTo.country}</p>
+                  <p>{data.billTo.email}</p>
+                </>
+              ) : (
+                <>
+                  <p>{data.billTo.address1}</p>
+                  <p>{data.billTo.address2}</p>
+                  <p>{data.billTo.city}</p>
+                  <p>{data.billTo.state}</p>
+                  <p>{data.billTo.country}</p>
+                  <p>{data.billTo.email}</p>
+                </>
+              )}
             </div>
           </div>
 

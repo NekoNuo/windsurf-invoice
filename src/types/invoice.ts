@@ -15,6 +15,7 @@ export interface InvoiceData {
   amount: string;
   description: string;
   dateRange: string;
+  invoiceType: 'windsurf' | 'cursor';
 }
 
 export interface BillToInfo {

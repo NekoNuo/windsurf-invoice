@@ -702,10 +702,8 @@ function generateBillToInfo(email: string, config?: AdvancedConfig): BillToInfo 
     };
   }
 
-  // 随机选择中国或国外地址（70%概率选择中国地址）
-  const useChineseAddress = Math.random() < 0.7;
-  const addressData = useChineseAddress ? chinaAddressData : internationalAddressData;
-  const selectedAddress = addressData[Math.floor(Math.random() * addressData.length)];
+  // 只使用国外地址
+  const selectedAddress = internationalAddressData[Math.floor(Math.random() * internationalAddressData.length)];
 
   return {
     name: selectedAddress.name,
@@ -736,14 +734,26 @@ function generateDateRange(datePaid: string): string {
 }
 
 // 主要的Invoice生成函数
-export function generateRandomInvoice(email: string, config?: AdvancedConfig): InvoiceData {
+export function generateRandomInvoice(email: string, config?: AdvancedConfig, invoiceType: 'windsurf' | 'cursor' = 'windsurf'): InvoiceData {
   const invoiceNumber = generateInvoiceNumber();
   const receiptNumber = generateReceiptNumber();
   const datePaid = config?.customDatePaid || generateRandomDate();
   const paymentMethod = config?.customPaymentMethod || generatePaymentMethod();
   const billTo = generateBillToInfo(email, config);
-  const amount = config?.customAmount || '$6.90';
-  const description = config?.customDescription || 'Windsurf Pro';
+
+  // 根据发票类型设置默认值
+  const getDefaultAmount = () => {
+    if (config?.customAmount) return config.customAmount;
+    return invoiceType === 'cursor' ? '$20.00' : '$6.90';
+  };
+
+  const getDefaultDescription = () => {
+    if (config?.customDescription) return config.customDescription;
+    return invoiceType === 'cursor' ? 'Cursor Pro' : 'Windsurf Pro';
+  };
+
+  const amount = getDefaultAmount();
+  const description = getDefaultDescription();
   const dateRange = generateDateRange(datePaid);
 
   return {
@@ -754,6 +764,7 @@ export function generateRandomInvoice(email: string, config?: AdvancedConfig): I
     billTo,
     amount,
     description,
-    dateRange
+    dateRange,
+    invoiceType
   };
 }

@@ -11,6 +11,7 @@ export default function Home() {
   const [emailError, setEmailError] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [advancedConfig, setAdvancedConfig] = useState<AdvancedConfig>({});
+  const [invoiceType, setInvoiceType] = useState<'windsurf' | 'cursor'>('windsurf');
 
   // 统一的输入框样式
   const inputClassName = "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500 text-base font-medium shadow-sm";
@@ -35,7 +36,7 @@ export default function Home() {
       return;
     }
 
-    const newInvoice = generateRandomInvoice(email.trim(), advancedConfig);
+    const newInvoice = generateRandomInvoice(email.trim(), advancedConfig, invoiceType);
     setInvoiceData(newInvoice);
   };
 
@@ -92,6 +93,45 @@ export default function Home() {
                 打印/保存PDF
               </button>
             )}
+          </div>
+
+          {/* 发票类型选择 */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              选择发票类型
+            </label>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <label className="flex items-center p-3 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                <input
+                  type="radio"
+                  name="invoiceType"
+                  value="windsurf"
+                  checked={invoiceType === 'windsurf'}
+                  onChange={(e) => setInvoiceType(e.target.value as 'windsurf' | 'cursor')}
+                  className="mr-3 text-blue-600 focus:ring-blue-500"
+                />
+                <img src="/logo.png" alt="Windsurf" className="w-8 h-8 mr-3" />
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Windsurf Pro</div>
+                  <div className="text-xs text-gray-500">$6.90/月</div>
+                </div>
+              </label>
+              <label className="flex items-center p-3 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                <input
+                  type="radio"
+                  name="invoiceType"
+                  value="cursor"
+                  checked={invoiceType === 'cursor'}
+                  onChange={(e) => setInvoiceType(e.target.value as 'windsurf' | 'cursor')}
+                  className="mr-3 text-blue-600 focus:ring-blue-500"
+                />
+                <img src="/cursor.svg" alt="Cursor" className="w-8 h-8 mr-3" />
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Cursor Pro</div>
+                  <div className="text-xs text-gray-500">$20.00/月</div>
+                </div>
+              </label>
+            </div>
           </div>
 
           {/* 邮箱输入区域 */}
