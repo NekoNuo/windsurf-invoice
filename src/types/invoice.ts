@@ -1,3 +1,5 @@
+export type Platform = 'windsurf' | 'cursor';
+
 export interface InvoiceData {
   invoiceNumber: string;
   receiptNumber: string;
@@ -15,6 +17,7 @@ export interface InvoiceData {
   amount: string;
   description: string;
   dateRange: string;
+  platform: Platform;
 }
 
 export interface BillToInfo {
@@ -38,4 +41,5 @@ export interface AdvancedConfig {
   customAmount?: string;
   customDatePaid?: string;
   customDescription?: string;
+  platform?: Platform;
 }

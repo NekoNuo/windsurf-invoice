@@ -1,4 +1,4 @@
-import { InvoiceData, BillToInfo, AdvancedConfig } from '@/types/invoice';
+import { InvoiceData, BillToInfo, AdvancedConfig, Platform } from '@/types/invoice';
 
 // 随机生成Invoice号码 (格式: 8位字符-4位数字)
 function generateInvoiceNumber(): string {
@@ -702,20 +702,37 @@ function generateBillToInfo(email: string, config?: AdvancedConfig): BillToInfo 
     };
   }
 
-  // 随机选择中国或国外地址（70%概率选择中国地址）
-  const useChineseAddress = Math.random() < 0.7;
-  const addressData = useChineseAddress ? chinaAddressData : internationalAddressData;
-  const selectedAddress = addressData[Math.floor(Math.random() * addressData.length)];
+  // 根据平台选择地址数据
+  const platform = config?.platform || 'windsurf';
 
-  return {
-    name: selectedAddress.name,
-    address1: selectedAddress.address1,
-    address2: selectedAddress.address2,
-    city: selectedAddress.city,
-    state: selectedAddress.state,
-    country: selectedAddress.country,
-    email: email
-  };
+  if (platform === 'cursor') {
+    // Cursor发票只使用国际地址
+    const selectedAddress = internationalAddressData[Math.floor(Math.random() * internationalAddressData.length)];
+    return {
+      name: selectedAddress.name,
+      address1: selectedAddress.address1,
+      address2: selectedAddress.address2,
+      city: selectedAddress.city,
+      state: selectedAddress.state,
+      country: selectedAddress.country,
+      email: email
+    };
+  } else {
+    // Windsurf发票随机选择中国或国外地址（70%概率选择中国地址）
+    const useChineseAddress = Math.random() < 0.7;
+    const addressData = useChineseAddress ? chinaAddressData : internationalAddressData;
+    const selectedAddress = addressData[Math.floor(Math.random() * addressData.length)];
+
+    return {
+      name: selectedAddress.name,
+      address1: selectedAddress.address1,
+      address2: selectedAddress.address2,
+      city: selectedAddress.city,
+      state: selectedAddress.state,
+      country: selectedAddress.country,
+      email: email
+    };
+  }
 }
 
 // 生成日期范围 (基于支付日期)
@@ -737,13 +754,17 @@ function generateDateRange(datePaid: string): string {
 
 // 主要的Invoice生成函数
 export function generateRandomInvoice(email: string, config?: AdvancedConfig): InvoiceData {
+  const platform = config?.platform || 'windsurf';
   const invoiceNumber = generateInvoiceNumber();
   const receiptNumber = generateReceiptNumber();
   const datePaid = config?.customDatePaid || generateRandomDate();
   const paymentMethod = config?.customPaymentMethod || generatePaymentMethod();
   const billTo = generateBillToInfo(email, config);
   const amount = config?.customAmount || '$6.90';
-  const description = config?.customDescription || 'Windsurf Pro';
+
+  // 根据平台设置默认描述
+  const defaultDescription = platform === 'cursor' ? 'Cursor Pro' : 'Windsurf Pro';
+  const description = config?.customDescription || defaultDescription;
   const dateRange = generateDateRange(datePaid);
 
   return {
@@ -754,6 +775,7 @@ export function generateRandomInvoice(email: string, config?: AdvancedConfig): I
     billTo,
     amount,
     description,
-    dateRange
+    dateRange,
+    platform
   };
 }

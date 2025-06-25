@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Invoice from '@/components/Invoice';
 import { generateRandomInvoice } from '@/utils/invoiceGenerator';
-import { InvoiceData, AdvancedConfig } from '@/types/invoice';
+import { InvoiceData, AdvancedConfig, Platform } from '@/types/invoice';
 
 export default function Home() {
   const [invoiceData, setInvoiceData] = useState<InvoiceData | null>(null);
@@ -11,6 +11,7 @@ export default function Home() {
   const [emailError, setEmailError] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [advancedConfig, setAdvancedConfig] = useState<AdvancedConfig>({});
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform>('windsurf');
 
   // 统一的输入框样式
   const inputClassName = "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500 text-base font-medium shadow-sm";
@@ -35,7 +36,8 @@ export default function Home() {
       return;
     }
 
-    const newInvoice = generateRandomInvoice(email.trim(), advancedConfig);
+    const configWithPlatform = { ...advancedConfig, platform: selectedPlatform };
+    const newInvoice = generateRandomInvoice(email.trim(), configWithPlatform);
     setInvoiceData(newInvoice);
   };
 
@@ -82,7 +84,7 @@ export default function Home() {
           <div className="flex justify-between items-start mb-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">随机Invoice生成器</h1>
-              <p className="text-gray-600">基于Windsurf Invoice模板生成随机Invoice数据</p>
+              <p className="text-gray-600">基于{selectedPlatform === 'cursor' ? 'Cursor' : 'Windsurf'} Invoice模板生成随机Invoice数据</p>
             </div>
             {invoiceData && (
               <button
@@ -92,6 +94,37 @@ export default function Home() {
                 打印/保存PDF
               </button>
             )}
+          </div>
+
+          {/* 平台选择器 */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              选择平台 <span className="text-red-500">*</span>
+            </label>
+            <div className="flex gap-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="platform"
+                  value="windsurf"
+                  checked={selectedPlatform === 'windsurf'}
+                  onChange={(e) => setSelectedPlatform(e.target.value as Platform)}
+                  className="mr-2 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="text-gray-900 font-medium">Windsurf</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="platform"
+                  value="cursor"
+                  checked={selectedPlatform === 'cursor'}
+                  onChange={(e) => setSelectedPlatform(e.target.value as Platform)}
+                  className="mr-2 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="text-gray-900 font-medium">Cursor</span>
+              </label>
+            </div>
           </div>
 
           {/* 邮箱输入区域 */}
@@ -353,25 +386,42 @@ export default function Home() {
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-medium text-gray-900 mb-2">原始样式</h3>
               <p className="text-sm text-gray-600">
-                完全保持原始Windsurf Invoice模板的样式和布局
+                完全保持原始{selectedPlatform === 'cursor' ? 'Cursor' : 'Windsurf'} Invoice模板的样式和布局
               </p>
             </div>
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <h3 className="font-medium text-blue-900 mb-2">Augment上传</h3>
+              <h3 className="font-medium text-blue-900 mb-2">平台上传</h3>
               <p className="text-sm text-blue-700 mb-3">
-                生成的Invoice可以上传到Augment平台进行进一步处理
+                生成的Invoice可以上传到相关平台进行进一步处理
               </p>
-              <a
-                href="https://www.augmentcode.com/resources/windsurf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                访问Augment平台
-                <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
+              <div className="space-y-2">
+                <a
+                  href={selectedPlatform === 'cursor'
+                    ? "https://app.augmentcode.com/promotions/cursor"
+                    : "https://www.augmentcode.com/resources/windsurf"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  访问Augment平台
+                  <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+                <div>
+                  <a
+                    href="https://www.sejda.com/pdf-editor"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-sm font-medium text-green-600 hover:text-green-800 transition-colors"
+                  >
+                    PDF在线编辑器
+                    <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

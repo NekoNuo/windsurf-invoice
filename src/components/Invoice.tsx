@@ -7,6 +7,35 @@ interface InvoiceProps {
 }
 
 export default function Invoice({ data }: InvoiceProps) {
+  // 根据平台获取公司信息
+  const getCompanyInfo = () => {
+    if (data.platform === 'cursor') {
+      return {
+        name: 'Cursor',
+        address1: '801 West End Avenue',
+        address2: 'New York, New York 10025',
+        country: 'United States',
+        phone: '+1 831-425-9504',
+        email: 'hi@cursor.com',
+        logo: '/cursor.svg',
+        logoAlt: 'Cursor Logo'
+      };
+    } else {
+      return {
+        name: 'Windsurf',
+        address1: '900 Villa Street',
+        address2: 'Mountain View, California 94041',
+        country: 'United States',
+        phone: '',
+        email: 'noreply@windsurf.com',
+        logo: '/logo.png',
+        logoAlt: 'Windsurf Logo'
+      };
+    }
+  };
+
+  const companyInfo = getCompanyInfo();
+
   return (
     <div className="invoice-container">
       <style jsx>{`
@@ -298,7 +327,7 @@ export default function Invoice({ data }: InvoiceProps) {
           <div className="header">
             <h1>Receipt</h1>
             <div className="logo">
-              <img src="/logo.png" alt="Windsurf Logo" />
+              <img src={companyInfo.logo} alt={companyInfo.logoAlt} />
             </div>
           </div>
 
@@ -329,12 +358,13 @@ export default function Invoice({ data }: InvoiceProps) {
           
           <div className="address-section">
             <div className="address">
-              <p><b>Windsurf</b></p>
-              <p>900 Villa Street</p>
-              <p>Mountain View, California 94041</p>
-              <p>United States</p>
-              <p>noreply@windsurf.com</p>
-              <p>EU OSS VAT EU372077851</p>
+              <p><b>{companyInfo.name}</b></p>
+              <p>{companyInfo.address1}</p>
+              <p>{companyInfo.address2}</p>
+              <p>{companyInfo.country}</p>
+              {companyInfo.phone && <p>{companyInfo.phone}</p>}
+              <p>{companyInfo.email}</p>
+              {data.platform === 'windsurf' && <p>EU OSS VAT EU372077851</p>}
             </div>
             <div className="address">
               <p><b>Bill to</b></p>
