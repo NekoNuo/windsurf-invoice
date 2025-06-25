@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { InvoiceData } from '@/types/invoice';
 
 interface InvoiceProps {
@@ -327,7 +328,7 @@ export default function Invoice({ data }: InvoiceProps) {
           <div className="header">
             <h1>Receipt</h1>
             <div className="logo">
-              <img src={companyInfo.logo} alt={companyInfo.logoAlt} />
+              <Image src={companyInfo.logo} alt={companyInfo.logoAlt} width={100} height={40} />
             </div>
           </div>
 

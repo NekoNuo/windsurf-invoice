@@ -1,4 +1,4 @@
-import { InvoiceData, BillToInfo, AdvancedConfig, Platform } from '@/types/invoice';
+import { InvoiceData, BillToInfo, AdvancedConfig } from '@/types/invoice';
 
 // 随机生成Invoice号码 (格式: 8位字符-4位数字)
 function generateInvoiceNumber(): string {
