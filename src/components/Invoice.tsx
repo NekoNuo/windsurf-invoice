@@ -289,7 +289,8 @@ export default function Invoice({ data }: InvoiceProps) {
 
           .page {
             width: 100% !important;
-            min-height: 100vh !important;
+            height: auto !important;
+            min-height: auto !important;
             margin: 0 !important;
             box-shadow: none !important;
             border: none !important;
@@ -304,7 +305,18 @@ export default function Invoice({ data }: InvoiceProps) {
           }
 
           .footer {
-            margin-top: 380px;
+            margin-top: 40px;
+            page-break-inside: avoid;
+          }
+
+          /* 防止内容分页 */
+          .content-wrapper {
+            page-break-inside: avoid;
+          }
+
+          .invoice-meta-section,
+          .invoice-table,
+          .invoice-summary {
             page-break-inside: avoid;
           }
 
