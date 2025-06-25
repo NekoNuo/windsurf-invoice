@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { InvoiceData } from '@/types/invoice';
 
 interface InvoiceProps {
@@ -328,7 +327,8 @@ export default function Invoice({ data }: InvoiceProps) {
           <div className="header">
             <h1>Receipt</h1>
             <div className="logo">
-              <Image src={companyInfo.logo} alt={companyInfo.logoAlt} width={100} height={40} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={companyInfo.logo} alt={companyInfo.logoAlt} />
             </div>
           </div>
 
